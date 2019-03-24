@@ -14,7 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    jukeboxViewModel.cpp
+    ViewModel\jukeboxViewModel.cpp
 
 RESOURCES += qml.qrc
 
@@ -30,4 +30,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    jukeboxViewModel.h
+    ViewModel\jukeboxViewModel.h

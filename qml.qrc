@@ -2,7 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>Pistes.qml</file>
-        <file>jukebox.ttf</file>
-        <file>AudioClip.qml</file>
+        <file alias="jukebox.ttf">Ressources/Fonts/jukebox.ttf</file>
+        <file>UI/AudioClip.qml</file>
     </qresource>
 </RCC>

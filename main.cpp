@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QFontDatabase>
 #include <QtDebug>
-#include "jukeboxViewModel.h"
+#include "ViewModel/jukeboxViewModel.h"
 
 int main(int argc, char *argv[])
 {
