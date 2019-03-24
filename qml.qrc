@@ -3,6 +3,13 @@
         <file>main.qml</file>
         <file>Pistes.qml</file>
         <file alias="jukebox.ttf">Ressources/Fonts/jukebox.ttf</file>
-        <file>UI/AudioClip.qml</file>
+        <file alias="forest.jpg">Ressources/BackGround/forest.jpg</file>
+        <file alias="pirate.jpg">Ressources/BackGround/pirate.jpg</file>
+        <file>ViewModel/jukeboxViewModel.cpp</file>
+        <file>ViewModel/jukeboxViewModel.h</file>
+        <file>main.cpp</file>
+    </qresource>
+    <qresource prefix="/UI">
+        <file alias="AudioClip.qml">UI/AudioClip.qml</file>
     </qresource>
 </RCC>
