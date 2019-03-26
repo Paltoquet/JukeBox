@@ -10,8 +10,8 @@ import "./UI" as UI
 
 Window {
     visible: true
-    width: 640
-    height: 480
+    width: 800
+    height: 600
     title: qsTr("JukeBox")
 
     JukeBoxViewModel{
@@ -44,6 +44,10 @@ Window {
         value: "coucou"
     }*/
 
+    /*UI.JukeBoxButton {
+        text: "pendejo"
+    }*/
+
     GridLayout {
         id: grid
         columns: 3
@@ -51,7 +55,6 @@ Window {
         anchors.left: folderButton.left
         anchors.right: folderButton.right
         anchors.topMargin: 15
-        opacity: 0.5
 
         rowSpacing: 8
 
@@ -71,20 +74,75 @@ Window {
                     }
                 }
 
-                Button {
+                UI.JukeBoxButton {
                     id: soundButton
                     anchors.fill: parent
-                    text: modelData.name
                     checkable: true
+
+                    soundName: modelData.name
+                    soundPath: modelData.path
                     onClicked: {
                         select();
                     }
                     checked: piste.playbackState === MediaPlayer.PlayingState
                 }
 
+                Rectangle {
+                    id: dragableObject
+
+                    property var soundButton: soundButton
+
+                    anchors.fill: parent
+                    Drag.active: dragArea.drag.active
+                    Drag.dragType: Drag.Automatic
+                    visible: dragArea.drag.active
+                    color: "transparent"
+                }
+
+                MouseArea {
+                    id: dragArea
+                    anchors.fill: dragableObject
+                    drag.target: dragableObject
+
+                    onClicked: soundButton.clicked()
+                    onPressed: parent.grabToImage(function(result) {
+                        dragObject.Drag.imageSource = result.url
+                    })
+                }
+
                 Audio {
                     id: piste
                 }
+            }
+        }
+    }
+
+    Rectangle {
+        id: shortCutSeparator
+        width: folderButton.width
+        height: 7
+        anchors.left: folderButton.left
+        anchors.right: folderButton.right
+        anchors.top: grid.bottom
+        anchors.topMargin: 15
+        color: "#dddddd"
+        opacity: 0.7
+    }
+
+    Row {
+
+        anchors.top: shortCutSeparator.bottom
+        anchors.left: folderButton.left
+        anchors.right: folderButton.right
+        anchors.topMargin: 15
+        spacing: 15
+
+        Repeater {
+            model: ["a", "z" , "e", "r", "t", "y", "u"]
+
+            UI.ShortCutArea {
+                shortCutId: index
+                shortCutSequence: modelData
             }
         }
     }
