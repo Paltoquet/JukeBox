@@ -1,83 +1,129 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.12
+import QtMultimedia 5.12
+
+import "../UI" as UI
 
 Item {
 
     id: root
 
-    property string value: ""
-    property bool isPlaying: false
+    property string soundName: ""
+    property string soundPath: ""
+
+    property bool isPlaying: piste.playbackState === MediaPlayer.PlayingState ? true : false
+
+    property bool isRepeating: repeatButton.checked
+    property real volume: volumeSlider.value
 
     width: 120
+    height: 45//childrenRect.height
+
+    function pause() {
+        piste.stop();
+    }
+
+    function play() {
+        piste.play();
+    }
+
+    JukeBoxButton {
+        id: playButton
+        soundName: root.soundName
+        soundPath: root.soundPath
+        checked: root.isPlaying
+
+        width: parent.width
+        height: 22
+    }
+
+    Row {
+        id: optionMenus
+
+        anchors.top: playButton.bottom
+        anchors.left: playButton.left
+        anchors.right: playButton.right
+
+        JukeBoxButton {
+            id: repeatButton
+            width: parent.width/4
+            height: volumeSlider.height
+            checkable: true
+            font.family: "jukebox"
+            soundName: "\uE800"
+        }
+
+        Rectangle {
+            width: childrenRect.width
+            height: childrenRect.height
+            color: root.isPlaying ? "#999999" : "#dddddd"
+            opacity: 0.7
+
+            UI.JukeBoxSlider{
+                id: volumeSlider
+                width: optionMenus.width - repeatButton.width
+                height: 23
+                from: 0
+                to: 1
+            }
+        }
+    }
 
     Rectangle {
-        id: clipName
-        color: "#c7c7c7"
-        width: parent.width
-        height: 40
+        id: dragableObject
 
-        Text {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            text: root.value
-            font.pointSize: 15
+        property var audioClip: root
+
+        anchors.fill: playButton
+        Drag.active: dragArea.drag.active
+        Drag.dragType: Drag.Automatic
+        visible: dragArea.drag.active
+        color: "transparent"
+    }
+
+    MouseArea {
+        id: dragArea
+        anchors.fill: dragableObject
+        drag.target: dragableObject
+        propagateComposedEvents: true
+
+        onClicked: {
+            var shouldPlay = piste.playbackState !== MediaPlayer.PlayingState;
+            if(shouldPlay) {
+                root.play();
+            }else {
+                root.pause();
+            }
+        }
+        onPressed: {
+            parent.grabToImage(function(result) {
+                dragObject.Drag.imageSource = result.url
+            })
         }
     }
 
-    Row {
-        id: playPause
-
-        anchors.top: clipName.bottom
-        anchors.left: clipName.left
-        anchors.right: clipName.right
-
-        Button {
-            width: parent.width/2
-            checkable: true
-            id: playButton
-            font.family: "jukebox"
-            text: "\uE801"
+    MediaPlayer {
+        id: piste
+        loops: root.isRepeating ? Audio.Infinite : 1
+        volume: root.volume
+        source: root.soundPath
+        onStatusChanged: {
+            //console.log("status " + status);
         }
-
-        Button {
-            width: parent.width/2
-            checkable: true
-            id: pauseButton
-            font.family: "jukebox"
-            text: "\uE802"
+        onErrorChanged: {
+            //console.log("error " + errorString);
+            //console.log(error);
         }
-    }
-
-    Row {
-        id: optionMenu
-
-        anchors.top: playPause.bottom
-        anchors.left: playPause.left
-        anchors.right: playPause.right
-
-        Button {
-            id: muteButton
-            checkable: true
-            width: parent.width/3
-            font.family: "jukebox"
-            text: "\uE808"
+        onErrorStringChanged: {
+            //console.log("error name " + errorString)
         }
-
-        Button {
-            id: lowVolumeButton
-            checkable: true
-            width: parent.width/3
-            font.family: "jukebox"
-            text: "\uE806"
+        onAvailabilityChanged: {
+            //console.log("availability " + availability)
         }
-
-        Button {
-            id: highVolumeButton
-            checkable: true
-            width: parent.width/3
-            font.family: "jukebox"
-            text: "\uE807"
+        onBufferProgressChanged: {
+            //console.log("buffer " + bufferProgress)
         }
     }
+
 }

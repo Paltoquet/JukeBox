@@ -16,7 +16,7 @@ Window {
 
     JukeBoxViewModel{
         id: jukeBox
-        folder: "D:/sound"
+        folder: "file:///D:/sound"
     }
 
     Image {
@@ -40,8 +40,8 @@ Window {
         }
     }
 
-    /*UI.AudioClip{
-        value: "coucou"
+    /*UI.AudioClip {
+        soundName: "coucou"
     }*/
 
     /*UI.JukeBoxButton {
@@ -61,58 +61,12 @@ Window {
         Repeater {
             model: jukeBox.sounds
 
-            Item {
+            UI.AudioClip {
+                id: soundButton
                 width: 120
-                height: 30
-
-                function select() {
-                    piste.source = modelData.path;
-                    if(piste.playbackState === MediaPlayer.PlayingState) {
-                        piste.stop();
-                    } else {
-                        piste.play();
-                    }
-                }
-
-                UI.JukeBoxButton {
-                    id: soundButton
-                    anchors.fill: parent
-                    checkable: true
-
-                    soundName: modelData.name
-                    soundPath: modelData.path
-                    onClicked: {
-                        select();
-                    }
-                    checked: piste.playbackState === MediaPlayer.PlayingState
-                }
-
-                Rectangle {
-                    id: dragableObject
-
-                    property var soundButton: soundButton
-
-                    anchors.fill: parent
-                    Drag.active: dragArea.drag.active
-                    Drag.dragType: Drag.Automatic
-                    visible: dragArea.drag.active
-                    color: "transparent"
-                }
-
-                MouseArea {
-                    id: dragArea
-                    anchors.fill: dragableObject
-                    drag.target: dragableObject
-
-                    onClicked: soundButton.clicked()
-                    onPressed: parent.grabToImage(function(result) {
-                        dragObject.Drag.imageSource = result.url
-                    })
-                }
-
-                Audio {
-                    id: piste
-                }
+                height: 45
+                soundName: modelData.name
+                soundPath: modelData.path
             }
         }
     }

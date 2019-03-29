@@ -1,10 +1,11 @@
-import QtQuick 2.0
+import QtQuick 2.12
 import QtQuick.Controls 2.2
+
 
 Button {
     width: 120
     height: 25
-    font.pixelSize: 10
+    font.pixelSize: 12
     checkable: true
     opacity: 0.7
 

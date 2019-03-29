@@ -5,6 +5,7 @@
 #include <QUrl>
 #include <QDir>
 #include <QQmlListProperty>
+#include <QMediaPlayer>
 
 #include <memory>
 
@@ -79,6 +80,7 @@ private:
     void _loadSoundData();
 
 private:
+    QMediaPlayer m_player;
     QQmlListProperty<SoundData> m_soundsProperty;
     QList<std::shared_ptr<SoundData>> m_sounds;
     QUrl m_folderPath;

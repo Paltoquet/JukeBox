@@ -9,8 +9,8 @@ Item {
     opacity: 0.7
 
     property int shortCutId: -1
-    property var shortCutSequence: ""
-    property var linkedButton: null
+    property string shortCutSequence: ""
+    property var audioClip: null
     property string soundName: ""
     property string soundPath: ""
 
@@ -23,6 +23,7 @@ Item {
         Text {
             id: shortCutIdText
             text: shortCutSequence
+            font.pixelSize: 12
             anchors.top: parent.top
             anchors.topMargin: 6
             anchors.horizontalCenter: parent.horizontalCenter
@@ -31,6 +32,7 @@ Item {
         Text {
             text: soundName
             width: parent.width - 6
+            font.pixelSize: 12
 
             clip: true
             horizontalAlignment: Text.AlignHCenter
@@ -44,9 +46,9 @@ Item {
         anchors.fill: parent
         onDropped: {
             var src = drag.source;
-            root.linkedButton = src.soundButton;
-            root.soundName = linkedButton.soundName;
-            root.soundPath = linkedButton.soundPath;
+            root.audioClip = src.audioClip;
+            root.soundName = audioClip.soundName;
+            root.soundPath = audioClip.soundPath;
         }
     }
 
@@ -54,8 +56,12 @@ Item {
         sequence: root.shortCutSequence
         context: Qt.ApplicationShortcut
         onActivated: {
-            if(linkedButton){
-                linkedButton.clicked();
+            if(audioClip){
+                if(audioClip.isPlaying){
+                    audioClip.pause();
+                } else {
+                    audioClip.play();
+                }
             }
         }
     }

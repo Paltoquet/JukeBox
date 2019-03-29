@@ -9,5 +9,6 @@
         <file>UI/AudioClip.qml</file>
         <file>UI/JukeBoxButton.qml</file>
         <file>UI/ShortCutArea.qml</file>
+        <file>UI/JukeBoxSlider.qml</file>
     </qresource>
 </RCC>

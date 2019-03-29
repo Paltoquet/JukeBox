@@ -1,6 +1,7 @@
 #include "jukeboxViewModel.h"
 #include <QtDebug>
 #include <QFileInfo>
+#include <QMediaPlayer>
 
 // --------------------------------------------------------------------- JukeBoxViewModel
 
@@ -25,6 +26,12 @@ void JukeBoxViewModel::setFolder(const QUrl &folder)
 {
     m_folderPath = folder;
     m_folder = QDir(m_folderPath.toLocalFile());
+    /*m_player.setMedia(QUrl::fromLocalFile("D:/sound/kern/combat/porte.mp3"));
+    m_player.setVolume(50);
+    m_player.play();
+    connect(&m_player, &QMediaPlayer::mediaStatusChanged, this, [this](){
+        qDebug() << m_player.mediaStatus();
+    });*/
     _loadSoundData();
 }
 
@@ -32,7 +39,7 @@ void JukeBoxViewModel::_loadSoundData()
 {
     m_sounds.clear();
     QStringList filters;
-    filters << "*.wav" << "*.mp3";
+    filters << "*.wav" << "*.mp3" << "*.flac";
     m_folder.setNameFilters(filters);
     auto files = m_folder.entryInfoList();
     int id = 0;
