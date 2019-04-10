@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.12
 import QtMultimedia 5.12
 
+import JukeBox 1.0
 import "../UI" as UI
 
 Item {
@@ -10,18 +11,18 @@ Item {
     id: root
 
     property string soundName: ""
-    property string soundPath: ""
+    property url soundPath: ""
 
-    property bool isPlaying: piste.playbackState === MediaPlayer.PlayingState ? true : false
+    property bool isPlaying: piste.isPlaying
 
     property bool isRepeating: repeatButton.checked
     property real volume: volumeSlider.value
 
     width: 120
-    height: 45//childrenRect.height
+    height: 45
 
     function pause() {
-        piste.stop();
+        piste.pause();
     }
 
     function play() {
@@ -64,8 +65,9 @@ Item {
                 id: volumeSlider
                 width: optionMenus.width - repeatButton.width
                 height: 23
+                value: 50
                 from: 0
-                to: 1
+                to: 100
             }
         }
     }
@@ -89,7 +91,7 @@ Item {
         propagateComposedEvents: true
 
         onClicked: {
-            var shouldPlay = piste.playbackState !== MediaPlayer.PlayingState;
+            var shouldPlay = !root.isPlaying;
             if(shouldPlay) {
                 root.play();
             }else {
@@ -103,7 +105,14 @@ Item {
         }
     }
 
-    MediaPlayer {
+    AudioClipViewModel {
+        id: piste
+        volume: root.volume
+        source: root.soundPath
+        isRepeating: root.isRepeating
+    }
+
+    /*MediaPlayer {
         id: piste
         loops: root.isRepeating ? Audio.Infinite : 1
         volume: root.volume
@@ -124,6 +133,6 @@ Item {
         onBufferProgressChanged: {
             //console.log("buffer " + bufferProgress)
         }
-    }
+    }*/
 
 }

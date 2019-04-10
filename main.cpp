@@ -2,7 +2,9 @@
 #include <QQmlApplicationEngine>
 #include <QFontDatabase>
 #include <QtDebug>
+#include <ViewModel/audioClipViewModel.h>
 #include "ViewModel/jukeboxViewModel.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +20,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<JukeBoxViewModel>("JukeBox", 1, 0, "JukeBoxViewModel");
     qmlRegisterType<SoundData>("JukeBox", 1, 0, "SoundData");
+    qmlRegisterType<AudioClipViewModel>("JukeBox", 1, 0, "AudioClipViewModel");
 
     QFontDatabase fontDatabase;
     if (fontDatabase.addApplicationFont(":/jukebox.ttf") == -1) {

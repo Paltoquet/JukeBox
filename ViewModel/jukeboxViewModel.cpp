@@ -10,6 +10,7 @@ JukeBoxViewModel::JukeBoxViewModel(QObject *parent) : QObject(parent)
     m_soundsProperty = QQmlListProperty<SoundData>(this, this,
                                                 &JukeBoxViewModel::soundCount,
                                                 &JukeBoxViewModel::sound);
+
 }
 
 QQmlListProperty<SoundData> JukeBoxViewModel::soundsProperty() const
@@ -26,12 +27,6 @@ void JukeBoxViewModel::setFolder(const QUrl &folder)
 {
     m_folderPath = folder;
     m_folder = QDir(m_folderPath.toLocalFile());
-    /*m_player.setMedia(QUrl::fromLocalFile("D:/sound/kern/combat/porte.mp3"));
-    m_player.setVolume(50);
-    m_player.play();
-    connect(&m_player, &QMediaPlayer::mediaStatusChanged, this, [this](){
-        qDebug() << m_player.mediaStatus();
-    });*/
     _loadSoundData();
 }
 
@@ -67,8 +62,8 @@ SoundData *JukeBoxViewModel::sound(QQmlListProperty<SoundData> *listProperty, in
 
 SoundData::SoundData(QObject *parent):
     QObject(parent),
-    m_path(""),
     m_id(-1),
+    m_path(""),
     m_name("")
 {
 
@@ -76,9 +71,9 @@ SoundData::SoundData(QObject *parent):
 
 SoundData::SoundData(QFileInfo fileInfo, int id, QObject *parent):
     QObject(parent),
-    m_path(fileInfo.filePath()),
-    m_name(fileInfo.baseName()),
-    m_id(id)
+    m_id(id),
+    m_path(QUrl::fromLocalFile(fileInfo.filePath())),
+    m_name(fileInfo.baseName())
 {
 
 }

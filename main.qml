@@ -40,14 +40,6 @@ Window {
         }
     }
 
-    /*UI.AudioClip {
-        soundName: "coucou"
-    }*/
-
-    /*UI.JukeBoxButton {
-        text: "pendejo"
-    }*/
-
     GridLayout {
         id: grid
         columns: 3

@@ -5,7 +5,6 @@
 #include <QUrl>
 #include <QDir>
 #include <QQmlListProperty>
-#include <QMediaPlayer>
 
 #include <memory>
 
@@ -47,9 +46,9 @@ signals:
     void nameChanged();
 
 private:
+    int m_id;
     QUrl m_path;
     QString m_name;
-    int m_id;
 };
 
 class JukeBoxViewModel : public QObject
@@ -80,7 +79,6 @@ private:
     void _loadSoundData();
 
 private:
-    QMediaPlayer m_player;
     QQmlListProperty<SoundData> m_soundsProperty;
     QList<std::shared_ptr<SoundData>> m_sounds;
     QUrl m_folderPath;
