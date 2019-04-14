@@ -66,11 +66,23 @@ class JukeBoxViewModel : public QObject
     )
 
 public:
+
+    enum KeyboardLayout {
+        AzertyLayout,
+        DumbLayout
+    };
+    Q_ENUM(KeyboardLayout)
+
+public:
     explicit JukeBoxViewModel(QObject *parent = nullptr);
 
     QQmlListProperty<SoundData> soundsProperty() const;
     QUrl folder() const;
+
     void setFolder(const QUrl &folder);
+
+public:
+    Q_INVOKABLE KeyboardLayout getKeyBoardLayout() const;
 
 private:
     static int soundCount(QQmlListProperty<SoundData>* listProperty);
@@ -81,6 +93,7 @@ private:
 private:
     QQmlListProperty<SoundData> m_soundsProperty;
     QList<std::shared_ptr<SoundData>> m_sounds;
+    KeyboardLayout m_keyBoardLayout;
     QUrl m_folderPath;
     QDir m_folder;
 

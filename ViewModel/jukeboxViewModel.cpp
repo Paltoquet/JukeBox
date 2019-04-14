@@ -11,6 +11,7 @@ JukeBoxViewModel::JukeBoxViewModel(QObject *parent) : QObject(parent)
                                                 &JukeBoxViewModel::soundCount,
                                                 &JukeBoxViewModel::sound);
 
+    m_keyBoardLayout = QLocale::system().language() == QLocale::French ? KeyboardLayout::AzertyLayout : KeyboardLayout::DumbLayout;
 }
 
 QQmlListProperty<SoundData> JukeBoxViewModel::soundsProperty() const
@@ -21,6 +22,11 @@ QQmlListProperty<SoundData> JukeBoxViewModel::soundsProperty() const
 QUrl JukeBoxViewModel::folder() const
 {
     return m_folderPath;
+}
+
+JukeBoxViewModel::KeyboardLayout JukeBoxViewModel::getKeyBoardLayout() const
+{
+    return m_keyBoardLayout;
 }
 
 void JukeBoxViewModel::setFolder(const QUrl &folder)
@@ -34,7 +40,7 @@ void JukeBoxViewModel::_loadSoundData()
 {
     m_sounds.clear();
     QStringList filters;
-    filters << "*.wav" << "*.mp3" << "*.flac";
+    filters << "*.wav" << "*.mp3";
     m_folder.setNameFilters(filters);
     auto files = m_folder.entryInfoList();
     int id = 0;
