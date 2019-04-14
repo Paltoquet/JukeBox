@@ -18,7 +18,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: "#eeeeee"
+        color: "#ebebeb"
 
         Text {
             id: shortCutIdText

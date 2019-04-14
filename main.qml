@@ -8,6 +8,7 @@ import QtMultimedia 5.8
 import JukeBox 1.0
 import "./UI" as UI
 
+
 Window {
     visible: true
     width: 800
@@ -16,7 +17,7 @@ Window {
 
     JukeBoxViewModel{
         id: jukeBox
-        folder: "file:///D:/sound"
+        folder: "file:///D:/sound/kern"
     }
 
     Image {
@@ -24,7 +25,7 @@ Window {
         anchors.fill: parent
     }
 
-    Button{
+    UI.JukeBoxButton{
         id: folderButton
         anchors.left: parent.left
         anchors.right: parent.right
@@ -32,8 +33,11 @@ Window {
         anchors.leftMargin: 80
         anchors.rightMargin: 80
         anchors.topMargin: 18
+        height: 38
+        font.pixelSize: 16
+        checkable: false
         opacity: 0.7
-        text: "folder"
+        text: "Select Folder"
         visible: true
         onClicked: {
             fileDialog.open();
@@ -66,12 +70,12 @@ Window {
     Rectangle {
         id: shortCutSeparator
         width: folderButton.width
-        height: 7
+        height: 10
         anchors.left: folderButton.left
         anchors.right: folderButton.right
         anchors.top: grid.bottom
         anchors.topMargin: 15
-        color: "#dddddd"
+        color: "#d8d8d8"
         opacity: 0.7
     }
 
@@ -80,11 +84,16 @@ Window {
         anchors.top: shortCutSeparator.bottom
         anchors.left: folderButton.left
         anchors.right: folderButton.right
+        anchors.leftMargin: (folderButton.width - childrenRect.width) / 2.0
         anchors.topMargin: 15
         spacing: 15
 
         Repeater {
-            model: ["a", "z" , "e", "r", "t", "y", "u"]
+
+            property var azertyShortCut: ["a", "z", "e", "r", "t", "y", "u"]
+            property var dumbShortCut: ["q", "w", "e", "r", "t", "y", "u"]
+
+            model: jukeBox.getKeyBoardLayout() === JukeBoxViewModel.AzertyLayout ? azertyShortCut : dumbShortCut
 
             UI.ShortCutArea {
                 shortCutId: index
