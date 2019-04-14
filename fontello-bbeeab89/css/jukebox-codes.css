@@ -10,5 +10,9 @@
 .icon-volume-off:before { content: '\e808'; } /* '' */
 .icon-cancel:before { content: '\e809'; } /* '' */
 .icon-ok:before { content: '\e80a'; } /* '' */
+.icon-shuffle:before { content: '\e80b'; } /* '' */
+.icon-note-beamed:before { content: '\e80c'; } /* '' */
+.icon-note:before { content: '\e80d'; } /* '' */
 .icon-cw:before { content: '\e80e'; } /* '' */
+.icon-ccw:before { content: '\e80f'; } /* '' */
 .icon-mute:before { content: '\f131'; } /* '' */

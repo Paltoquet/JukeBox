@@ -83,6 +83,30 @@
       "css": "ok",
       "code": 59402,
       "src": "fontawesome"
+    },
+    {
+      "uid": "37c5ab63f10d7ad0b84d0978dcd0c7a8",
+      "css": "shuffle",
+      "code": 59403,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "fda731b5a4026685e1a9c7e64228e2b2",
+      "css": "note-beamed",
+      "code": 59404,
+      "src": "entypo"
+    },
+    {
+      "uid": "39e2e6682c28e1e3b5f49825a19717c4",
+      "css": "note",
+      "code": 59405,
+      "src": "entypo"
+    },
+    {
+      "uid": "f9c3205df26e7778abac86183aefdc99",
+      "css": "ccw",
+      "code": 59407,
+      "src": "fontawesome"
     }
   ]
 }
