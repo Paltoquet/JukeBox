@@ -14,29 +14,45 @@ Item {
     property url soundPath: ""
 
     property bool isPlaying: piste.isPlaying
+    property bool isWaiting: piste.isWaiting
 
     property bool isRepeating: repeatButton.checked
-    property real volume: volumeSlider.value
+    property bool isRandomizing: randomButton.checked
+    property real volume: 100
 
-    width: 120
+    width: 140
     height: 45
 
     function pause() {
-        piste.pause();
+        pauseAnimation.start();
+        //piste.pause();
     }
 
     function play() {
         piste.play();
     }
 
+    AudioClipViewModel {
+        id: piste
+        volume: root.volume
+        source: root.soundPath
+        isRepeating: root.isRepeating
+        isRandomizing: root.isRandomizing
+    }
+
     JukeBoxButton {
         id: playButton
         soundName: root.soundName
         soundPath: root.soundPath
-        checked: root.isPlaying
+        checked: root.isPlaying || root.isWaiting
 
         width: parent.width
         height: 22
+    }
+
+    ButtonGroup {
+        id: optionButtonGroup
+        exclusive: false
     }
 
     Row {
@@ -48,26 +64,60 @@ Item {
 
         JukeBoxButton {
             id: repeatButton
-            width: parent.width/4
+            width: parent.width/6
             height: volumeSlider.height
+            hoverEnabled: true
+            hoverRequested: playButton.hovered && !playButton.checked
+            ToolTip.text: "repeat"
+
+            ButtonGroup.group: optionButtonGroup
             checkable: true
             font.family: "jukebox"
             soundName: "\uE800"
+
+            onClicked: {
+               if(checked && randomButton.checked){
+                   randomButton.checked = false;
+               }
+            }
+        }
+
+        JukeBoxButton {
+            id: randomButton
+            width: parent.width/6
+            height: volumeSlider.height
+            hoverEnabled: true
+            hoverRequested: playButton.hovered && !playButton.checked
+            ToolTip.text: "random"
+
+            ButtonGroup.group: optionButtonGroup
+            checkable: true
+            font.family: "jukebox"
+            soundName: "\uE80b"
+
+            onClicked: {
+                if(checked && repeatButton.checked){
+                    repeatButton.checked = false;
+                }
+            }
         }
 
         Rectangle {
             width: childrenRect.width
             height: childrenRect.height
-            color: root.isPlaying ? "#999999" : "#dddddd"
+            color: playButton.color
             opacity: 0.7
 
             UI.JukeBoxSlider{
                 id: volumeSlider
-                width: optionMenus.width - repeatButton.width
+                width: optionMenus.width - repeatButton.width - randomButton.width
                 height: 23
                 value: 50
                 from: 0
                 to: 100
+                onValueChanged: {
+                    root.volume = value;
+                }
             }
         }
     }
@@ -91,7 +141,7 @@ Item {
         propagateComposedEvents: true
 
         onClicked: {
-            var shouldPlay = !root.isPlaying;
+            var shouldPlay = !playButton.checked;
             if(shouldPlay) {
                 root.play();
             }else {
@@ -105,11 +155,26 @@ Item {
         }
     }
 
-    AudioClipViewModel {
-        id: piste
-        volume: root.volume
-        source: root.soundPath
-        isRepeating: root.isRepeating
+    NumberAnimation {
+        id: pauseAnimation
+
+        property int startedVolume: 100
+
+        target: root
+        properties: "volume"
+        duration: 750
+        from: piste.volume
+        to: 0
+        onStarted: {
+            startedVolume = piste.volume;
+        }
+
+        onRunningChanged: {
+            if(!running){
+                piste.pause();
+                root.volume = startedVolume;
+            }
+        }
     }
 
     /*MediaPlayer {

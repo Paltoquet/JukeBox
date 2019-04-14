@@ -9,14 +9,29 @@ Button {
     checkable: true
     opacity: 0.7
 
+    hoverEnabled: true
+    ToolTip.visible: hovered && ToolTip.text !== ""
+    ToolTip.delay: 720
+
     property string soundName: ""
     property string soundPath: ""
+    property color color: backGround.color
+    property bool hoverRequested: false
 
     text: soundName
 
     background: Rectangle {
+        id: backGround
         implicitWidth: 120
         implicitHeight: 40
-        color: checked ? "#999999" : "#dddddd"
+        color: {
+            if(checked) {
+                return "#999999";
+            } else if(hovered || hoverRequested) {
+                return "#ebebeb";
+            } else {
+                return "#d8d8d8";
+            }
+        }
     }
 }
